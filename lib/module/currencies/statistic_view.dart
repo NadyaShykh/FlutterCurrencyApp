@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_currency/storage/database_helper.dart';
+import 'package:flutter_currency/utils/Constants.dart';
 
 
-class StatisticPage extends StatelessWidget {
+class StatisticPage extends StatefulWidget {
 
-  // reference to our single class that manages the database
+  @override
+  State<StatefulWidget> createState() {
+    return _StatisticPageState();
+  }
+
+}
+
+class _StatisticPageState extends State<StatisticPage> {
+
   final dbHelper = DatabaseHelper.instance;
+  int _radioValue = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +29,7 @@ class StatisticPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
+            /*RaisedButton(
               child: Text('insert', style: TextStyle(fontSize: 20),),
               onPressed: () {_insert();},
             ),
@@ -33,6 +48,34 @@ class StatisticPage extends StatelessWidget {
             RaisedButton(
               child: Text('query Today', style: TextStyle(fontSize: 20),),
               onPressed: () {_queryToday();},
+            ),*/
+            new Padding(
+              padding: new EdgeInsets.all(20.0),
+            ),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Radio(
+                  value: 0,
+                  groupValue: _radioValue,
+                  onChanged: _handleRadioValueChange,
+                ),
+                new Text(
+                  Constants.EN_LANG,
+                  style: new TextStyle(fontSize: 16.0),
+                ),
+                new Radio(
+                  value: 1,
+                  groupValue: _radioValue,
+                  onChanged: _handleRadioValueChange,
+                ),
+                new Text(
+                  Constants.UA_LANG,
+                  style: new TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -42,8 +85,13 @@ class StatisticPage extends StatelessWidget {
 
 // Button onPressed methods
 
+  void _handleRadioValueChange(int value) {
+    setState(() {
+      _radioValue = value;
+    });
+  }
+
   void _insert() async {
-    // row to insert
     Map<String, dynamic> row = {
       DatabaseHelper.columnName : 'USD',
       DatabaseHelper.columnDate  : '11.05.2019',
@@ -67,12 +115,11 @@ class StatisticPage extends StatelessWidget {
   }
 
   void _update() async {
-    // row to update
     Map<String, dynamic> row = {
       DatabaseHelper.columnId   : 1,
       DatabaseHelper.columnName : 'USD',
-      DatabaseHelper.columnDate  : '10.05.2019',
-      DatabaseHelper.columnSale  : 24.4,
+      DatabaseHelper.columnDate  : '12.05.2019',
+      DatabaseHelper.columnSale  : 4.11,
       DatabaseHelper.columnPurchase  : 22.4
     };
     final rowsAffected = await dbHelper.update(row);
@@ -80,10 +127,8 @@ class StatisticPage extends StatelessWidget {
   }
 
   void _delete() async {
-    // Assuming that the number of rows is the id for the last row.
     final id = await dbHelper.queryRowCount();
     final rowsDeleted = await dbHelper.delete(id);
     print('deleted $rowsDeleted row(s): row $id');
   }
 }
-

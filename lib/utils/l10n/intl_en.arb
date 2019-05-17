@@ -1,0 +1,79 @@
+{
+  "@@last_modified": "2018-09-24T14:38:58.383162",
+  "currenciesTitle": "Currencies",
+  "@currenciesTitle": {
+    "description": "The application title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "coursesTabTitle": "Cources",
+  "@coursesTabTitle": {
+    "type": "text",
+    "placeholders": {}
+  }, 
+  "calculatorTabTitle": "Calculator",
+  "@calculatorTabTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "statisticTabTitle": "Statistic",
+  "@statisticTabTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAlertTitle": "Error!",
+  "@errorAlertTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAlertButtonClose": "Close",
+  "@errorAlertButtonClose": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAlertText": "Something went wrong...",
+  "@errorAlertText": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "buyRadiobuttonTitle": "Buy",
+  "@buyRadiobuttonTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sellRadiobuttonTitle": "Sell",
+  "@sellRadiobuttonTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exceptionTitle": "Exception: ",
+  "@exceptionTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exceptionText": "Error while getting data [StatusCode:",
+  "@exceptionText": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTitle": "Error:",
+  "@errorTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "uaLang": "UA",
+  "@uaLang": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enLang": "EN",
+  "@enLang": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ruLang": "RU",
+  "@ruLang": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

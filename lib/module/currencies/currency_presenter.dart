@@ -5,46 +5,41 @@ import '../../injection/dependency_injection.dart';
 
 abstract class CurrencyListViewContract {
   void onLoadCurrenciesComplete(List<CurrencyData> items);
-  void onLoadCurrenciesError();
+  void onLoadCurrenciesError(onError);
 }
 
 class CurrencyListPresenter {
   CurrencyListViewContract _view;
   CurrencyRepository _repository;
   final dbHelper = DatabaseHelper.instance;
-  String _todayDate = "${(DateTime.now().day-2).toString().padLeft(2,'0')}.${DateTime.now().month.toString().padLeft(2,'0')}.${DateTime.now().year.toString()}";
 
   CurrencyListPresenter(this._view){
     _repository = Injector().contactRepository;
   }
 
-  void loadCurrencies(){
+  Future loadCurrencies() async {
     assert(_view != null);
-
-    _repository.fetch()
-        .then((currencies) => _view.onLoadCurrenciesComplete(currencies))
-        .catchError((onError) {
-      print(onError);
-      _view.onLoadCurrenciesError();
-    });
+    _repository.getCurrenciesFromDB().then((currencies) => checkAvaliableData(currencies));
   }
 
-  Future saveCurrenciesToDB(List<CurrencyData> currencies) async {
-    final allRows = await dbHelper.queryAllTodayRows(_todayDate);
-    if (allRows.toList().length==0) {
-      currencies.forEach((element) => insertCurrency(element));
+  void checkAvaliableData(List<CurrencyData> currencies) {
+    if (currencies.length != 0) {
+      _view.onLoadCurrenciesComplete(currencies);
+
+    } else {
+      _repository
+          .fetch()
+          .then((currencies) => saveCurrenciesToDB(currencies))
+          .catchError((onError) {
+        print(onError);
+        _view.onLoadCurrenciesError(onError);
+      });
     }
   }
 
-  void insertCurrency(CurrencyData element) async{
-    Map<String, dynamic> row = {
-      DatabaseHelper.columnName : element.shortName,
-      DatabaseHelper.columnDate  : _todayDate,
-      DatabaseHelper.columnSale  : element.saleRate,
-      DatabaseHelper.columnPurchase  : element.purchaseRate
-    };
-    final id = await dbHelper.insert(row);
-    print('inserted row id: $id');
+  void saveCurrenciesToDB(List<CurrencyData> currencies) {
+    _repository.saveCurrenciesToDB(currencies);
+    _view.onLoadCurrenciesComplete(currencies);
   }
 
 }

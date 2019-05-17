@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_currency/data/currency_data.dart';
+import 'package:flutter_currency/utils/Constants.dart';
+import 'package:flutter_currency/utils/Network.dart';
 import 'calculator_presenter.dart';
 import 'currency_presenter.dart';
 
@@ -21,6 +23,7 @@ class _CalculatorPageState extends State<CalculatorPage>
   String _dropdownValue;
   TextEditingController _controller = TextEditingController(text: '');
   String _txt = '';
+  double _currentPrice = 0.0;
 
   _CalculatorPageState() {
     _presenter = CalculatorPresenter(this);
@@ -31,7 +34,7 @@ class _CalculatorPageState extends State<CalculatorPage>
     super.initState();
     _isSearching = true;
     _presenter.loadCurrencies();
-    _dropdownValue = 'USD';
+    _dropdownValue = Constants.USD_CURRENCY;
     _controller.addListener(onChange);
   }
 
@@ -44,19 +47,37 @@ class _CalculatorPageState extends State<CalculatorPage>
   @override
   void onLoadCurrenciesComplete(List<CurrencyData> items) {
     setState(() {
-      _currencies = deleteEmptyData(items.sublist(3));
+      _currencies = items;
       _isSearching = false;
+      _currentPrice = getCurrencyPrice();
     });
   }
 
   @override
-  void onLoadCurrenciesError() {
-    // TODO: implement onLoadCurrenciesError
+  void onLoadCurrenciesError(onError) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text(Constants.ERROR_ALERT_TITLE),
+          content: new Text(Constants.ERROR_ALERT_TEXT),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text(Constants.ERROR_ALERT_BUTTON_CLOSE),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _handleRadioValueChange(int value) {
     setState(() {
       _radioValue = value;
+      _currentPrice=getCurrencyPrice();
       updatePaySum();
     });
   }
@@ -71,8 +92,7 @@ class _CalculatorPageState extends State<CalculatorPage>
               child: CircularProgressIndicator()));
       return widget;
     } else {
-      return new MaterialApp(
-          home: new Scaffold(
+      return new Scaffold(
               resizeToAvoidBottomPadding: false,
               body: new Container(
                 padding: EdgeInsets.all(8.0),
@@ -91,7 +111,7 @@ class _CalculatorPageState extends State<CalculatorPage>
                           onChanged: _handleRadioValueChange,
                         ),
                         new Text(
-                          'Buy',
+                          Constants.BUY_RADIOBUTTON_TITLE,
                           style: new TextStyle(fontSize: 16.0),
                         ),
                         new Radio(
@@ -100,7 +120,7 @@ class _CalculatorPageState extends State<CalculatorPage>
                           onChanged: _handleRadioValueChange,
                         ),
                         new Text(
-                          'Sell',
+                          Constants.SELL_RADIOBUTTON_TITLE,
                           style: new TextStyle(
                             fontSize: 16.0,
                           ),
@@ -112,6 +132,7 @@ class _CalculatorPageState extends State<CalculatorPage>
                       onChanged: (String newValue) {
                         setState(() {
                           _dropdownValue = newValue;
+                          _currentPrice = getCurrencyPrice();
                           updatePaySum();
                         });
                       },
@@ -122,9 +143,9 @@ class _CalculatorPageState extends State<CalculatorPage>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Image.network(
-                                  'https://countryflags.io/' +
+                                  Network.IMAGE_FLAG_PATH_START +
                                       currency.shortName.substring(0, 2) +
-                                      '/shiny/64.png',
+                                      Network.IMAGE_FLAG_PATH_END,
                                 ),
                                 SizedBox(width: 10),
                                 Text(
@@ -147,12 +168,12 @@ class _CalculatorPageState extends State<CalculatorPage>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           new Image.network(
-                            'https://countryflags.io/UA/shiny/64.png',
+                            Network.UAH_IMAGE_FLAG_PATH,
                             width: 50,
                           ),
                           SizedBox(width: 10),
                           new Text(
-                            'UAH',
+                            Constants.UAH_CURRENCY,
                             style: new TextStyle(fontSize: 16.0),
                           ),
                           SizedBox(width: 10),
@@ -166,13 +187,8 @@ class _CalculatorPageState extends State<CalculatorPage>
                     ),
                   ],
                 ),
-              )));
+              ));
     }
-  }
-
-  List<CurrencyData> deleteEmptyData(List<CurrencyData> list) {
-    list.removeWhere((currency) => (currency.purchaseRate == null));
-    return list;
   }
 
   void onChange() {
@@ -182,16 +198,16 @@ class _CalculatorPageState extends State<CalculatorPage>
     _controller.selection = new TextSelection(baseOffset: _controller.text.length, extentOffset: _controller.text.length);
   }
 
-  num getCurrencyPrice() {
+  double getCurrencyPrice() {
     CurrencyData data=_currencies.where((currency) => (currency.shortName.contains(_dropdownValue))).toList().elementAt(0);
-    return _radioValue==0?data.saleRate*1000:data.purchaseRate*1000;
+    return _radioValue==0?data.saleRate*100:data.purchaseRate*100;
   }
 
   void updatePaySum() {
     if (_controller.text.isEmpty) {
       _txt = '';
     } else {
-      _txt = (getCurrencyPrice()*int.parse(_controller.text)/1000).toString();
+      _txt = ((_currentPrice*double.parse(_controller.text)).round()/100).toString();
     }
   }
 }

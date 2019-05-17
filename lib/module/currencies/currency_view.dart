@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_currency/utils/Constants.dart';
+import 'package:flutter_currency/utils/Network.dart';
+import 'package:flutter_currency/localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import '../../data/currency_data.dart';
 import 'currency_presenter.dart';
 import 'calculator_view.dart';
@@ -12,7 +16,6 @@ class CurrencyPage extends StatefulWidget {
 }
 
 class _CurrencyPageState extends State<CurrencyPage> {
-
   int _currentIndex = 0;
   final List<Widget> _children = [
     CurrencyList(),
@@ -24,7 +27,7 @@ class _CurrencyPageState extends State<CurrencyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Currencies"),
+        title: Text(Constants.CURRENCIES_TITLE),
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -33,15 +36,15 @@ class _CurrencyPageState extends State<CurrencyPage> {
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.call_missed),
-            title: new Text('Cources'),
+            title: new Text(Constants.COURSES_TAB_TITLE),
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.apps),
-            title: new Text('Calculator'),
+            title: new Text(Constants.CALCULATOR_TAB_TITLE),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.assessment),
-            title: Text('Statistic'),
+            title: Text(Constants.STATISTIC_TAB_TITLE),
           )
         ],
       ),
@@ -84,15 +87,33 @@ class _CurrencyListState extends State<CurrencyList>
   @override
   void onLoadCurrenciesComplete(List<CurrencyData> items) {
     setState(() {
-      _currencies = deleteEmptyData(items.sublist(3));
-      _presenter.saveCurrenciesToDB(_currencies);
+      _currencies = items;
       _isSearching = false;
     });
   }
 
   @override
-  void onLoadCurrenciesError() {
-    // TODO: implement onLoadCurrenciesError
+  void onLoadCurrenciesError(onError) {
+    _isSearching=false;
+    setState(() {
+    });
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text(Constants.ERROR_ALERT_TITLE),
+          content: new Text(Constants.ERROR_ALERT_TEXT),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text(Constants.ERROR_ALERT_BUTTON_CLOSE),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -105,11 +126,14 @@ class _CurrencyListState extends State<CurrencyList>
               padding: EdgeInsets.only(left: 16.0, right: 16.0),
               child: CircularProgressIndicator()));
     } else {
-      widget = ListView(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
-          children: _buildCurrencyList());
+      if (_currencies==null) {
+        widget = new Container();
+      } else {
+        widget = ListView(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            children: _buildCurrencyList());
+      }
     }
-
     return widget;
   }
 
@@ -117,10 +141,6 @@ class _CurrencyListState extends State<CurrencyList>
     return _currencies.map((currency) => _CurrencyListItem(currency)).toList();
   }
 
-  List<CurrencyData> deleteEmptyData(List<CurrencyData> list) {
-    list.removeWhere((currency) => (currency.purchaseRate == null));
-    return list;
-  }
 }
 
 ///
@@ -130,26 +150,27 @@ class _CurrencyListState extends State<CurrencyList>
 class _CurrencyListItem extends ListTile {
   _CurrencyListItem(CurrencyData currency)
       : super(
-      title: Text(currency.shortName,
-          style: TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(currency.purchaseRate.toString() + " UAH",
-              style: TextStyle(color: Colors.red)),
-          Text(currency.saleRate.toString() + " UAH",
-              style: TextStyle(color: Colors.green)),
-        ],
-      ),
-      leading: ClipRRect(
-        borderRadius: new BorderRadius.circular(8.0),
-        child: Image.network(
-          'https://countryflags.io/' +
-              currency.shortName.substring(0, 2) +
-              '/shiny/64.png',
-          height: 100.0,
-          width: 60.0,
-        ),
-      ));
+            title: Text(currency.shortName,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(currency.purchaseRate.toString() + " " + Constants.UAH_CURRENCY,
+                    style: TextStyle(color: Colors.red)),
+                Text(currency.saleRate.toString() + " " +Constants.UAH_CURRENCY,
+                    style: TextStyle(color: Colors.green)),
+              ],
+            ),
+            leading: ClipRRect(
+              borderRadius: new BorderRadius.circular(8.0),
+              child: Image.network(
+                Network.IMAGE_FLAG_PATH_START +
+                    currency.shortName.substring(0, 2) +
+                    Network.IMAGE_FLAG_PATH_END,
+                height: 100.0,
+                width: 60.0,
+              ),
+            ));
 }
 
+// локалізація

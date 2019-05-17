@@ -1,0 +1,79 @@
+{
+  "@@last_modified": "2018-09-24T14:38:58.383162",
+  "currenciesTitle": "Валюти",
+  "@currenciesTitle": {
+    "description": "The application title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "coursesTabTitle": "Курси",
+  "@coursesTabTitle": {
+    "type": "text",
+    "placeholders": {}
+  }, 
+  "calculatorTabTitle": "Калькулятор",
+  "@calculatorTabTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "statisticTabTitle": "Статистика",
+  "@statisticTabTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAlertTitle": "Помилка!",
+  "@errorAlertTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAlertButtonClose": "Закрити",
+  "@errorAlertButtonClose": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAlertText": "Щось пішло не так...",
+  "@errorAlertText": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "buyRadiobuttonTitle": "Купити",
+  "@buyRadiobuttonTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sellRadiobuttonTitle": "Продати",
+  "@sellRadiobuttonTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exceptionTitle": "Виняток: ",
+  "@exceptionTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exceptionText": "Помилка отримання даних [Статускод:",
+  "@exceptionText": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTitle": "Помилка:",
+  "@errorTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "uaLang": "укр",
+  "@uaLang": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enLang": "анг",
+  "@enLang": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ruLang": "рос",
+  "@ruLang": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

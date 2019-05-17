@@ -1,0 +1,79 @@
+{
+  "@@last_modified": "2018-09-24T14:38:58.383162",
+  "currenciesTitle": "Валюты",
+  "@currenciesTitle": {
+    "description": "The application title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "coursesTabTitle": "Курсы",
+  "@coursesTabTitle": {
+    "type": "text",
+    "placeholders": {}
+  }, 
+  "calculatorTabTitle": "Калькулятор",
+  "@calculatorTabTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "statisticTabTitle": "Статистика",
+  "@statisticTabTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAlertTitle": "Ошибка!",
+  "@errorAlertTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAlertButtonClose": "Закрыть",
+  "@errorAlertButtonClose": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAlertText": "Что-то пошло не так...",
+  "@errorAlertText": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "buyRadiobuttonTitle": "Купить",
+  "@buyRadiobuttonTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sellRadiobuttonTitle": "Продать",
+  "@sellRadiobuttonTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exceptionTitle": "Исключение: ",
+  "@exceptionTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exceptionText": "Ошибка получения данных [Статускод:",
+  "@exceptionText": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTitle": "Ошибка:",
+  "@errorTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "uaLang": "укр",
+  "@uaLang": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enLang": "анг",
+  "@enLang": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ruLang": "рус",
+  "@ruLang": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_currency/utils/Constants.dart';
 
 class CurrencyData {
   final String shortName;
@@ -21,6 +22,8 @@ class CurrencyData {
 
 abstract class CurrencyRepository {
   Future<List<CurrencyData>> fetch();
+  Future<List<CurrencyData>> getCurrenciesFromDB();
+  Future saveCurrenciesToDB(List<CurrencyData> currencies);
 }
 
 class FetchDataException implements Exception {
@@ -29,6 +32,6 @@ class FetchDataException implements Exception {
   FetchDataException(this._message);
 
   String toString() {
-    return "Exception: $_message";
+    return Constants.EXCEPTION_TITLE + _message;
   }
 }
